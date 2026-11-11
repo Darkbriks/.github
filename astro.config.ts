@@ -9,6 +9,7 @@ import rehypeMermaid from 'rehype-mermaid';
 import { siteConfig } from './site.config';
 
 const themeDir = fileURLToPath(new URL(`./src/themes/${siteConfig.theme}`, import.meta.url));
+const themeBuild = (await import(`./src/themes/${siteConfig.theme}/build.ts`)).default;
 
 export default defineConfig({
   site: process.env.SITE ?? siteConfig.site,
@@ -29,7 +30,7 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid', 'math'] },
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark' },
+      themes: themeBuild.shiki,
       defaultColor: false,
       wrap: false,
       transformers: [
@@ -51,7 +52,8 @@ export default defineConfig({
           rehypeMermaid,
           {
             strategy: 'img-svg',
-            dark: true,
+            mermaidConfig: themeBuild.mermaid.light,
+            dark: themeBuild.mermaid.dark,
             launchOptions: process.env.MERMAID_BROWSER
               ? { executablePath: process.env.MERMAID_BROWSER }
               : undefined,

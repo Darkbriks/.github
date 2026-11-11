@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Cv } from '../../../lib/cv';
+import type { Locale } from '../../../../site.config';
+import { ui } from '../../../i18n/ui';
+import { routes, t, formatDate, locales } from '../../../lib/i18n';
+
+interface Props { lang: Locale; cv: Cv }
+const { lang, cv } = Astro.props;
+const _ = ui(lang);
+const alternates = Object.fromEntries(locales.map((l) => [l, routes.cv(l)]));
+
+const period = (start?: string, end?: string) =>
+  [start && formatDate(start, lang), end && formatDate(end, lang, _('cv.present'))].filter(Boolean).join(' – ');
+
+const timeline = [
+  { key: 'cv.experience', items: cv.experience },
+  { key: 'cv.education', items: cv.education },
+] as const;
+const pdf = cv.pdf?.[lang];
+---
+
+<Base lang={lang} title={_('cv.title')} description={t(cv.headline, lang)} alternates={alternates} current="cv">
+  <div class="narrow cv">
+    <header class="cv-header">
+      <div>
+        <h1>{cv.name}</h1>
+        <p class="headline">{t(cv.headline, lang)}</p>
+        <p class="cv-contact">
+          {cv.location && <span>{t(cv.location, lang)}</span>}
+          {cv.email && <a href={`mailto:${cv.email}`}>{cv.email}</a>}
+          {cv.links.map((l) => <a href={l.url}>{t(l.label, lang)}</a>)}
+        </p>
+      </div>
+      {pdf && <a class="no-print cv-pdf" href={`${import.meta.env.BASE_URL}${pdf}`} download>{_('cv.pdf')}</a>}
+    </header>
+
+    {
+      cv.summary && (
+        <section>
+          <h2>{_('cv.summary')}</h2>
+          <p>{t(cv.summary, lang)}</p>
+        </section>
+      )
+    }
+
+    {
+      timeline.map(({ key, items }) =>
+        items.length > 0 && (
+          <section>
+            <h2>{_(key)}</h2>
+            {items.map((e) => (
+              <div class="cv-entry">
+                <div class="when">{period(e.start, e.end)}</div>
+                <div>
+                  <h3>{e.url ? <a href={e.url}>{t(e.title, lang)}</a> : t(e.title, lang)}</h3>
+                  {(e.org || e.location) && (
+                    <div class="org">{[t(e.org, lang), t(e.location, lang)].filter(Boolean).join(', ')}</div>
+                  )}
+                  {e.description && <p>{t(e.description, lang)}</p>}
+                  {e.highlights.length > 0 && <ul>{e.highlights.map((h) => <li>{t(h, lang)}</li>)}</ul>}
+                </div>
+              </div>
+            ))}
+          </section>
+        ),
+      )
+    }
+
+    {
+      cv.skills.length > 0 && (
+        <section>
+          <h2>{_('cv.skills')}</h2>
+          <dl class="cv-kv">
+            {cv.skills.map((s) => (
+              <>
+                <dt>{t(s.group, lang)}</dt>
+                <dd>{s.items.join(', ')}</dd>
+              </>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      cv.languages.length > 0 && (
+        <section>
+          <h2>{_('cv.languages')}</h2>
+          <dl class="cv-kv">
+            {cv.languages.map((l) => (
+              <>
+                <dt>{t(l.name, lang)}</dt>
+                <dd>{t(l.level, lang)}</dd>
+              </>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      cv.interests.length > 0 && (
+        <section>
+          <h2>{_('cv.interests')}</h2>
+          <ul class="cv-list">{cv.interests.map((i) => <li>{t(i, lang)}</li>)}</ul>
+        </section>
+      )
+    }
+  </div>
+</Base>

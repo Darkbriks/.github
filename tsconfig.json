@@ -5,7 +5,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@theme/*": ["src/themes/default/*"],
+      "@theme/*": ["src/themes/pastel/*"],
       "@lib/*": ["src/lib/*"],
       "@site": ["site.config.ts"]
     }

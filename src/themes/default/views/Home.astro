@@ -2,12 +2,15 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import type { Project } from '../../../lib/projects';
+import type { PageText } from '../../../lib/pages';
+import { render } from 'astro:content';
 import type { Locale } from '../../../../site.config';
 import { ui } from '../../../i18n/ui';
 import { routes, locales } from '../../../lib/i18n';
 
-interface Props { lang: Locale; projects: Project[] }
-const { lang, projects } = Astro.props;
+interface Props { lang: Locale; projects: Project[]; intro?: PageText }
+const { lang, projects, intro } = Astro.props;
+const Intro = intro && (await render(intro)).Content;
 const _ = ui(lang);
 
 const featured = projects.filter((p) => p.meta.featured);
@@ -17,7 +20,8 @@ const alternates = Object.fromEntries(locales.map((l) => [l, routes.home(l)]));
 
 <Base lang={lang} alternates={alternates} current="home">
   <div class="container">
-    <h1>{_('home.title')}</h1>
+    <h1>{intro?.data.title ?? _('home.title')}</h1>
+    {Intro && <div class="prose"><Intro /></div>}
 
     {projects.length === 0 && <p>{_('home.empty')}</p>}
 

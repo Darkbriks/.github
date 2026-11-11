@@ -6,7 +6,7 @@ export const siteConfig = {
 
   locales: ['fr', 'en'] as const,
 
-  theme: 'default',
+  theme: 'pastel',
 
   links: [
     { kind: 'github', url: 'https://github.com/Darkbriks', label: 'GitHub' },

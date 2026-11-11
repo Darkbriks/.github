@@ -40,6 +40,11 @@ const projectTexts = defineCollection({
   }),
 });
 
+const pages = defineCollection({
+  loader: glob({ pattern: '*/{fr,en}.{md,mdx}', base: './src/content/pages', generateId: ({ entry }) => entry.replace(/\.mdx?$/, '') }),
+  schema: z.object({ title: z.string().optional() }),
+});
+
 /* ------------------------------------------------------------------ CV */
 
 const yearMonth = z.union([z.string().regex(/^\d{4}(-\d{2})?$/), z.literal('present')]);
@@ -73,4 +78,4 @@ const cv = defineCollection({
   }),
 });
 
-export const collections = { projects, projectTexts, cv };
+export const collections = { projects, projectTexts, pages, cv };

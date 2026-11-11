@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import { siteConfig, type Locale } from '../../../../site.config';
+import { ui } from '../../../i18n/ui';
+import { routes, locales } from '../../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  title?: string;
+  description?: string;
+  alternates: Partial<Record<Locale, string>>;
+  current?: 'home' | 'project' | 'cv';
+}
+
+const { lang, title, description, alternates, current } = Astro.props;
+const _ = ui(lang);
+const fullTitle = title ? `${title} · ${siteConfig.author}` : siteConfig.author;
+const switchTo = locales.find((l) => l !== lang && alternates[l]);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    {
+      Object.entries(alternates).map(([l, url]) => (
+        <link rel="alternate" hreflang={l} href={new URL(url!, Astro.site)} />
+      ))
+    }
+    <meta property="og:title" content={fullTitle} />
+    {description && <meta property="og:description" content={description} />}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={routes.home(lang)}>{siteConfig.author}</a>
+        <nav>
+          <a href={routes.home(lang)} aria-current={current === 'home' ? 'page' : undefined}>{_('nav.projects')}</a>
+          <a href={routes.cv(lang)} aria-current={current === 'cv' ? 'page' : undefined}>{_('nav.cv')}</a>
+        </nav>
+        {
+          switchTo && (
+            <a class="lang-switch" href={alternates[switchTo]} hreflang={switchTo} lang={switchTo}>
+              {_('lang.switch')}
+            </a>
+          )
+        }
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span>© {new Date().getFullYear()} {siteConfig.author}</span>
+        {siteConfig.links.map((l) => <a href={l.url}>{l.label}</a>)}
+      </div>
+    </footer>
+  </body>
+</html>

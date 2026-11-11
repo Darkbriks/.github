@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import type { Project } from '../../../lib/projects';
+import type { PageText } from '../../../lib/pages';
+import type { Locale } from '../../../../site.config';
+import { ui } from '../../../i18n/ui';
+import { routes, locales, t } from '../../../lib/i18n';
+
+interface Props { lang: Locale; projects: Project[]; intro?: PageText }
+const { lang, projects, intro } = Astro.props;
+const _ = ui(lang);
+const Intro = intro && (await render(intro)).Content;
+
+const featured = projects.filter((p) => p.meta.featured);
+const others = projects.filter((p) => !p.meta.featured);
+const alternates = Object.fromEntries(locales.map((l) => [l, routes.home(l)]));
+---
+
+<Base lang={lang} alternates={alternates} current="home">
+  <div class="container">
+    <header class="intro">
+      <h1>{intro?.data.title ?? _('home.title')}</h1>
+      {Intro && <Intro />}
+    </header>
+
+    {projects.length === 0 && <p>{_('home.empty')}</p>}
+
+    {
+      featured.map((p) => (
+        <a class="feature" href={routes.project(lang, p.slug)}>
+          {p.meta.cover && (
+            <div class="cover">
+              <Image src={p.meta.cover} alt={t(p.meta.coverAlt, lang)} width={900} />
+            </div>
+          )}
+          <div>
+            <h3>{p.text.data.title}</h3>
+            <p>{p.text.data.summary}</p>
+            <div class="meta">
+              {p.meta.status !== 'done' && <span class="status">{_(`status.${p.meta.status}`)}</span>}
+              {p.meta.tags.length > 0 && <ul class="tags">{p.meta.tags.map((tag) => <li>{tag}</li>)}</ul>}
+            </div>
+          </div>
+        </a>
+      ))
+    }
+
+    {
+      others.length > 0 && (
+        <section>
+          <h2>{featured.length > 0 ? _('home.more') : _('home.title')}</h2>
+          <ul class="grid">{others.map((p) => <li><ProjectCard project={p} /></li>)}</ul>
+        </section>
+      )
+    }
+  </div>
+</Base>
