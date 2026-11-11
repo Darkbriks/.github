@@ -1,0 +1,16 @@
+date: 2026-01-22
+status: done
+tags: [C, C++03, C++17, MIPS asm, operating systems, concurrency]
+cover: ./machine-etats-connexion.png
+coverAlt:
+  fr: Diagramme de la machine d'états des connexions réseau, de CONN_CLOSED à CONN_TERMINATED
+  en: State machine diagram of network connections, from CONN_CLOSED to CONN_TERMINATED
+featured: true
+links:
+  - kind: repo
+    url: https://github.com/Darkbriks/nachos-team-a
+  - kind: doc
+    url: https://darkbriks.github.io/nachos-team-a/
+    label:
+      fr: Documentation (mdBook)
+      en: Documentation (mdBook)
