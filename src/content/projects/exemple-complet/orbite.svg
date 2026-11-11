@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240">
+  <rect width="400" height="240" fill="#f4f6fb"/>
+  <ellipse cx="200" cy="120" rx="160" ry="90" fill="none" stroke="#3355aa" stroke-width="2"/>
+  <circle cx="104" cy="120" r="10" fill="#e0a020"/><text x="96" y="148" font-size="12" fill="#333">F</text>
+  <circle cx="360" cy="120" r="5" fill="#3355aa"/><text x="350" y="108" font-size="12" fill="#333">apo.</text>
+  <line x1="40" y1="120" x2="360" y2="120" stroke="#999" stroke-dasharray="4 4"/>
+</svg>

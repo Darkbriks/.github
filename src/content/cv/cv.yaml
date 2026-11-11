@@ -1,0 +1,50 @@
+name: Antoine Patron
+headline:
+  fr: TODO
+  en: TODO
+location: Grenoble, France
+email: antoine.patron@proton.me
+links:
+  - { kind: github, url: https://github.com/Darkbriks, label: GitHub }
+
+summary:
+  fr: Courte présentation à rédiger.
+  en: Short introduction to write.
+
+education:
+  - title: { fr: Master 2 ORCO, en: MSc ORCO }
+    org: Université Grenoble Alpes
+    location: Grenoble
+    end: present
+    highlights:
+      - { fr: À compléter, en: To be completed }
+  - title: { fr: Licence d'informatique, en: BSc in Computer Science }
+    org: Université du Littoral Côte d'Opale
+    location: Calais
+    end: "2025-06"
+
+experience:
+  - title: { fr: Stage — intitulé, en: Internship — title }
+    org: Entreprise
+    start: "2025-04"
+    end: "2025-08"
+    description:
+      fr: Une phrase de contexte.
+      en: One sentence of context.
+    highlights:
+      - { fr: Réalisation marquante, en: Notable achievement }
+
+skills:
+  - group: { fr: Langages, en: Languages }
+    items: [C++20, C, Python, Rust]
+  - group: { fr: Outils, en: Tools }
+    items: [Linux, CMake, Git, LaTeX]
+
+languages:
+  - { name: { fr: Français, en: French }, level: { fr: Langue maternelle, en: Native } }
+  - { name: { fr: Anglais, en: English }, level: { fr: TODO, en: TODO } }
+
+interests:
+  - { fr: Astrophotographie, en: Astrophotography }
+  - { fr: Musique, en: Music }
+  - { fr: Jeu vidéo, en: Video games }

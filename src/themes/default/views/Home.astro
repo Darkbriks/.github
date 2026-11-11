@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import type { Project } from '../../../lib/projects';
+import type { Locale } from '../../../../site.config';
+import { ui } from '../../../i18n/ui';
+import { routes, locales } from '../../../lib/i18n';
+
+interface Props { lang: Locale; projects: Project[] }
+const { lang, projects } = Astro.props;
+const _ = ui(lang);
+
+const featured = projects.filter((p) => p.meta.featured);
+const others = projects.filter((p) => !p.meta.featured);
+const alternates = Object.fromEntries(locales.map((l) => [l, routes.home(l)]));
+---
+
+<Base lang={lang} alternates={alternates} current="home">
+  <div class="container">
+    <h1>{_('home.title')}</h1>
+
+    {projects.length === 0 && <p>{_('home.empty')}</p>}
+
+    {
+      featured.length > 0 && (
+        <section>
+          <h2>{_('home.featured')}</h2>
+          <ul class="grid">{featured.map((p) => <li><ProjectCard project={p} /></li>)}</ul>
+        </section>
+      )
+    }
+
+    {
+      others.length > 0 && (
+        <section>
+          {featured.length > 0 && <h2>{_('home.all')}</h2>}
+          <ul class="grid">{others.map((p) => <li><ProjectCard project={p} /></li>)}</ul>
+        </section>
+      )
+    }
+  </div>
+</Base>

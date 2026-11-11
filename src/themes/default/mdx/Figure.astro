@@ -1,0 +1,21 @@
+---
+// Usage MDX :
+// <Figure caption="Légende">
+//
+// ![texte alternatif](./image.png)
+//
+// </Figure>
+interface Props { caption?: string }
+const { caption } = Astro.props;
+---
+
+<figure class="figure">
+  <slot />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .figure { margin-inline: 0; }
+  .figure :global(p) { margin: 0; }
+  figcaption { color: var(--muted); font-size: 0.9rem; text-align: center; margin-top: 0.4rem; }
+</style>

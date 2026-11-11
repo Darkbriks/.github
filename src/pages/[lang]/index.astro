@@ -1,0 +1,12 @@
+---
+import Home from '@theme/views/Home.astro';
+import { getProjects } from '../../lib/projects';
+import { langPaths } from '../../lib/i18n';
+import type { Locale } from '../../../site.config';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Locale;
+const projects = await getProjects(lang);
+---
+
+<Home lang={lang} projects={projects} />

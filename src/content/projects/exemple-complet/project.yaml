@@ -1,0 +1,16 @@
+date: 2026-10-01
+status: wip            # done | wip | paused | archived
+tags: [C++20, simulation, physique]
+cover: ./cover.svg
+coverAlt:
+  fr: Deux orbites elliptiques autour d'une étoile
+  en: Two elliptical orbits around a star
+featured: true
+links:
+  - kind: repo
+    url: https://github.com/example/orbital-sim
+  - kind: video
+    url: https://www.youtube.com/watch?v=5wFcdmWRmrA
+    label:
+      fr: Démo en vidéo
+      en: Video demo

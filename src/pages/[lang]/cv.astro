@@ -1,0 +1,12 @@
+---
+import CvView from '@theme/views/Cv.astro';
+import { getCv } from '../../lib/cv';
+import { langPaths } from '../../lib/i18n';
+import type { Locale } from '../../../site.config';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Locale;
+const cv = await getCv();
+---
+
+<CvView lang={lang} cv={cv} />

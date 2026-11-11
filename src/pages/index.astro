@@ -1,0 +1,21 @@
+---
+import { defaultLocale } from '../../site.config';
+import { locales, routes } from '../lib/i18n';
+const target = routes.home(defaultLocale);
+const map = Object.fromEntries(locales.map((l) => [l, routes.home(l)]));
+---
+
+<!doctype html>
+<html lang={defaultLocale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <script is:inline define:vars={{ map }}>
+      const l = (navigator.language || '').slice(0, 2);
+      if (map[l]) location.replace(map[l]);
+    </script>
+    <title>...</title>
+  </head>
+  <body><a href={target}>{target}</a></body>
+</html>

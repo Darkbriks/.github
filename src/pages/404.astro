@@ -1,0 +1,13 @@
+---
+import { defaultLocale } from '../../site.config';
+import { routes } from '../lib/i18n';
+---
+
+<!doctype html>
+<html lang={defaultLocale}>
+  <head><meta charset="utf-8" /><title>404</title></head>
+  <body style="font-family:system-ui;text-align:center;padding:4rem">
+    <h1>404</h1>
+    <p><a href={routes.home(defaultLocale)}>Accueil</a> · <a href={routes.home('en')}>Home</a></p>
+  </body>
+</html>

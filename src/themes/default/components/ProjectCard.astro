@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../../../lib/projects';
+import { routes, t, formatDate } from '../../../lib/i18n';
+import { ui } from '../../../i18n/ui';
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const { meta, text, lang, slug } = project;
+const _ = ui(lang);
+---
+
+<a class="card" href={routes.project(lang, slug)}>
+  {meta.cover && <Image src={meta.cover} alt={t(meta.coverAlt, lang)} width={640} loading="lazy" />}
+  <div class="card-body">
+    <h3>{text.data.title}</h3>
+    <p>{text.data.summary}</p>
+    <div class="meta">
+      <time datetime={meta.date.toISOString()}>{formatDate(meta.date, lang)}</time>
+      {meta.status !== 'done' && <span class="status">{_(`status.${meta.status}`)}</span>}
+    </div>
+    {meta.tags.length > 0 && <ul class="tags">{meta.tags.map((tag) => <li>{tag}</li>)}</ul>}
+  </div>
+</a>

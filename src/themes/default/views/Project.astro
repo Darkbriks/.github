@@ -1,0 +1,50 @@
+---
+import 'katex/dist/katex.min.css';
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { components } from '../mdx';
+import type { Project } from '../../../lib/projects';
+import { ui } from '../../../i18n/ui';
+import { routes, t, formatDate, locales } from '../../../lib/i18n';
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const { meta, text, lang, slug, translated } = project;
+const _ = ui(lang);
+const { Content } = await render(text);
+const alternates = Object.fromEntries(locales.map((l) => [l, routes.project(l, slug)]));
+---
+
+<Base lang={lang} title={text.data.title} description={text.data.summary} alternates={alternates} current="project">
+  <article class="narrow">
+    <header class="project-header">
+      <h1>{text.data.title}</h1>
+      <p class="lead">{text.data.summary}</p>
+      <div class="meta">
+        <time datetime={meta.date.toISOString()}>{formatDate(meta.date, lang)}</time>
+        {meta.status !== 'done' && <span class="status">{_(`status.${meta.status}`)}</span>}
+        {meta.tags.length > 0 && <ul class="tags">{meta.tags.map((tag) => <li>{tag}</li>)}</ul>}
+      </div>
+      {
+        meta.links.length > 0 && (
+          <ul class="links" aria-label={_('project.links')}>
+            {meta.links.map((l) => (
+              <li><a href={l.url} rel="noopener">{l.label ? t(l.label, lang) : _(`link.${l.kind}`)}</a></li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {!translated && <p class="notice" lang={lang}>{_('project.untranslated')}</p>}
+
+    {meta.cover && <Image class="hero" src={meta.cover} alt={t(meta.coverAlt, lang)} width={1200} />}
+
+    <div class="prose" lang={translated ? lang : undefined}>
+      <Content components={components} />
+    </div>
+
+    <p><a href={routes.home(lang)}>← {_('project.back')}</a></p>
+  </article>
+</Base>
